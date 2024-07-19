@@ -4,6 +4,8 @@ import Landing from "../components/Landing.vue";
 import { auth } from "../firebase";
 import QrCode from "../components/QrCode.vue";
 import UrlShortener from "../components/UrlShortener.vue";
+import History from "../components/History.vue";
+import CustomUrl from "../components/CustomUrl.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -22,6 +24,16 @@ const routes: RouteRecordRaw[] = [
         name: "QRCode",
         component: QrCode,
       },
+      {
+        path: "history",
+        name: "History",
+        component: History,
+      },
+      {
+        path: "custom-url",
+        name: "CustomUrl",
+        component: CustomUrl,
+      }
     ]
   },
   {
@@ -37,7 +49,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const isAuthenticated = auth.currentUser !== null;
 

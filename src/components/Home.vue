@@ -1,13 +1,19 @@
 <template>
   <main class="home">
     <section class="hero">
-      <h1>Let's help you manipulate your looonnnggg links</h1>
+      <h1 class="typing-container" v-if="showTypingEffect">{{ typingText }}</h1>
+      <h1 v-else>Let's help you manipulate your looonnnggg links!</h1>
+      <!-- <h1>Let's help you manipulate your looonnnggg links!</h1> -->
       <div class="buttons">
         <router-link to="/" class="button" :class="{ active: isShortenerPath }">
-          <img src="../assets/linkIcon.png"> Shorten
+          <img src="../assets/linkIcon.png" /> Shorten
         </router-link>
-        <router-link to="/qr-code" class="button" :class="{ active: isQrCodePath }">
-          <img src="../assets/qrIcon.png"> QR Code
+        <router-link
+          to="/qr-code"
+          class="button"
+          :class="{ active: isQrCodePath }"
+        >
+          <img src="../assets/qrIcon.png" /> QR Code
         </router-link>
       </div>
     </section>
@@ -18,25 +24,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-// import UrlShortener from './UrlShortener.vue';
+import { defineComponent, computed, onMounted, ref } from "vue";
 // import QrCode from './QrCode.vue'
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 
 export default defineComponent({
-
-  // components: {
-  //   UrlShortener,
-  //   QrCode,
-  // },
   setup() {
     const route = useRoute();
-    const isShortenerPath = computed(() => route.name === 'UrlShortener');
-    const isQrCodePath = computed(() => route.name === 'QrCode');
+    const isShortenerPath = computed(() => route.name === "UrlShortener");
+    const isQrCodePath = computed(() => route.name === "QrCode");
+    const typingText = ref("");
+    const fullText = "Let's help you manipulate your looonnnggg links!";
+    const showTypingEffect = ref(true);
+
+    onMounted(() => {
+      let index = 0;
+      const typingInterval = setInterval(() => {
+        if (index < fullText.length) {
+          typingText.value += fullText[index];
+          index++;
+        } else {
+          clearInterval(typingInterval);
+          setTimeout(() => {
+            showTypingEffect.value = false;
+          }, 1000);
+        }
+      }, 100);
+    });
 
     return {
       isShortenerPath,
       isQrCodePath,
+      typingText,
+      showTypingEffect,
     };
   },
 });
@@ -46,15 +66,15 @@ export default defineComponent({
 .home {
   text-align: center;
   padding: 2rem;
-  /* background-color: #f4f4f4; */
-  /* min-height: 100vh; */
+  background-color: #f4f4f4; 
+  min-height: 100vh;
 }
 
 .hero {
   margin-bottom: 2rem;
   padding: 2rem;
-  /* border-radius: 10px; */
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hero h1 {

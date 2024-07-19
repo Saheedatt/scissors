@@ -93,7 +93,7 @@ export default defineComponent({
   /* background-color:#f36601; */
   background-color: #fff;
   cursor: pointer;
-  border: 2px solid #f36601;;
+  border: 2px solid #f36601;
   &:hover {
     background-color: #f57c00;
   }

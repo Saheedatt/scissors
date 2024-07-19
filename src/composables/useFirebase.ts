@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 export function useFirebase() {
   const shortenUrl = async (url: string) => {
     const shortenedId = nanoid(10);
-    const scissorsDomain = "https://scissors.com";
+    const scissorsDomain = "https://scissors-14267.web.app";
     const shortenedUrl = `${scissorsDomain}/${shortenedId}`;
     try {
       const docRef = await addDoc(collection(db, "shortenedUrls"), {
@@ -15,9 +15,9 @@ export function useFirebase() {
       });
       console.log("Document written with ID: ", docRef.id);
       return shortenedUrl;
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      throw e;
+    } catch (event) {
+      console.error("Error adding document: ", event);
+      throw event;
     }
   };
 

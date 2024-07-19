@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
     define: {
       // 'process.env': env
       'import.meta.env': env
-    }
+    },
+    build: {
+      outDir: 'dist', 
+    },
   };
 });
