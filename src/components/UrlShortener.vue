@@ -43,6 +43,8 @@ export default defineComponent({
     const error = ref("");
 
     const handleSubmit = async () => {
+      // console.log(url)
+      // console.log(shortenedUrl)
       if (!validator.isURL(url.value)) {
         error.value = "Please enter a valid URL.";
         return;
@@ -51,8 +53,9 @@ export default defineComponent({
 
       try {
         shortenedUrl.value = await shortenUrl(url.value);
-      } catch (event) {
-        console.error("Failed to shorten URL", event);
+      } catch (error) {
+      
+        console.error("Failed to shorten URL", error);
       }
     };
 

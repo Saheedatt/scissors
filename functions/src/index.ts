@@ -1,81 +1,39 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import cors from "cors";
-import validator from "validator";
 
 admin.initializeApp();
 const db = admin.firestore();
-const corsHandler = cors({ origin: true });
 
-export const shortenUrl = functions.https.onCall(async (data, context) => {
-  const { url } = data;
+const scissorsDomain = "https://scissors-14267.web.app";
 
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "User is not authenticated."
-    );
-  }
-
-  if (!validator.isURL(url)) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "Invalid URL provided."
-    );
-  }
-
-  const shortId = generateShortId();
-
-  await db.collection("urls").doc(shortId).set({
-    originalUrl: url,
-    shortUrl: `https://scissors-14267.web.app/${shortId}`,
-    userId: context.auth.uid,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-  });
-
-  return { shortenedUrl: `https://scissors-14267.web.app/${shortId}` };
-});
-
-export const redirect = functions.https.onRequest((req, res) => {
-  corsHandler(req, res, async () => {
-    console.log("Request path:", req.path);
-    const shortId = req.path.split("/")[1];
-    console.log("Extracted shortId:", shortId);
-
+export const redirect = functions.https.onRequest(async (req, res) => {
+  try {
+    // Extract the short ID from the path
+    const shortId = req.path.split("/").pop();
     if (!shortId) {
-      console.log("No shortId found in request path");
-      res.status(400).send("Invalid short URL");
+      res.status(400).send("No short ID provided.");
       return;
     }
 
-    try {
-      const doc = await db.collection("urls").doc(shortId).get();
-      if (doc.exists) {
-        const originalUrl = doc.data()?.originalUrl;
-        console.log("Original URL from database:", originalUrl);
-        if (originalUrl) {
-          res.redirect(301, originalUrl);
-        } else {
-          console.log("No original URL found for shortId:", shortId);
-          res.status(404).send("Short URL not found");
-        }
-      } else {
-        console.log("Short URL not found in Firestore:", shortId);
-        res.status(404).send("Short URL not found");
-      }
-    } catch (error) {
-      console.error("Error redirecting URL:", error);
-      res.status(500).send("Internal Server Error");
+    // Fetch the saved url from Firestore
+    const doc = await db.collection("new-urls").doc(shortId).get();
+    if (!doc.exists) {
+      res.status(404).send("URL not found.");
+      return;
     }
-  });
-});
 
-function generateShortId(): string {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const length = 6;
-  let shortId = "";
-  for (let i = 0; i < length; i++) {
-    shortId += characters.charAt(Math.floor(Math.random() * characters.length));
+    // we need to check that the original URL exists in the document
+    const docData = doc.data();
+    if (!docData || !docData.originalUrl) {
+      res.status(404).send("URL not found.");
+      return;
+    }
+
+    // redirect to the original URL onClick
+    const { originalUrl } = docData;
+    res.redirect(originalUrl);
+  } catch (error) {
+    console.error("Error redirecting URL:", error);
+    res.status(500).send("Internal Server Error");
   }
-  return shortId;
-}
+});
