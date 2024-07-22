@@ -1,59 +1,105 @@
 <template>
   <nav class="navbar" role="navigation">
-    <!-- <div class="logo">Scissors</div> -->
     <a href="/">
-    <div class="logo">
-      <img src="../assets/scissors.png" alt="Scissors Icon" />
-      <h1>Scissors</h1>
-      <img src="../assets/scissors.png" alt="Scissors Icon" />
-    </div>
-  </a>
+      <div class="logo">
+        <img src="../assets/scissors.png" alt="Scissors Icon" />
+        <h1>Scissors</h1>
+        <img src="../assets/scissors.png" alt="Scissors Icon" />
+      </div>
+    </a>
     <ul class="nav-links">
-      <li><a href="#features" @click.prevent="scrollToSection('features')">Features</a></li>
-      <li><a href="#vision" @click.prevent="scrollToSection('vision')">Vision</a></li>
+      <li>
+        <a href="#features" @click.prevent="scrollToSection('features')"
+          >Features</a
+        >
+      </li>
+      <li>
+        <a href="#vision" @click.prevent="scrollToSection('vision')">Vision</a>
+      </li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#blog">Blog</a></li>
       <li><a href="#help">Help</a></li>
     </ul>
     <div class="access-button">
-      <button @click="signInUsingGoogle" aria-label="Register or Login">
-        Register / Log In
+      <button @click="handleAuthAction" :aria-label="authButtonLabel">
+        {{ authButtonText }}
       </button>
     </div>
   </nav>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { defineComponent, ref, onMounted } from "vue";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { useRouter } from "vue-router";
 import "../style.css";
-//import {auth} from '../firebase';
 
 export default defineComponent({
   setup() {
     const router = useRouter();
+    const auth = getAuth();
+    const isLoggedIn = ref(false);
+    const authButtonText = ref("Register / Log In");
+    const authButtonLabel = ref("Register or Login");
+
+    const updateAuthState = (user: any) => {
+      isLoggedIn.value = !!user;
+      authButtonText.value = isLoggedIn.value ? "Log Out" : "Register / Log In";
+      authButtonLabel.value = isLoggedIn.value
+        ? "Log Out"
+        : "Register or Login";
+    };
+
+    onMounted(() => {
+      onAuthStateChanged(auth, updateAuthState);
+    });
 
     const signInUsingGoogle = async () => {
-      const authenticate = getAuth();
       const provider = new GoogleAuthProvider();
       try {
-        const result = await signInWithPopup(authenticate, provider);
+        const result = await signInWithPopup(auth, provider);
         console.log("User signed in:", result.user);
-
         router.push("/");
       } catch (error) {
         console.error("Error signing in: ", error);
       }
     };
-    const scrollToSection = (sectionId: string) => {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+    const logOut = async () => {
+      try {
+        await signOut(auth);
+        console.log("User signed out");
+        router.push("/landing");
+      } catch (error) {
+        console.error("Error signing out: ", error);
+      }
+    };
+    const handleAuthAction = () => {
+      if (isLoggedIn.value) {
+        logOut();
+      } else {
+        signInUsingGoogle();
       }
     };
 
-    return { signInUsingGoogle, scrollToSection };
+    const scrollToSection = (sectionId: string) => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    return {
+      handleAuthAction,
+      scrollToSection,
+      authButtonText,
+      authButtonLabel,
+    };
   },
 });
 </script>

@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../components/Home.vue";
 import Landing from "../components/Landing.vue";
-import { auth } from "../firebase";
+import RedirectShortUrl from "../components/RedirectShortUrl.vue";
 import QrCode from "../components/QrCode.vue";
 import UrlShortener from "../components/UrlShortener.vue";
 import History from "../components/History.vue";
 import CustomUrl from "../components/CustomUrl.vue";
+import { auth } from "../firebase";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -24,22 +25,33 @@ const routes: RouteRecordRaw[] = [
         name: "QRCode",
         component: QrCode,
       },
-      {
-        path: "history",
-        name: "History",
-        component: History,
-      },
+      // {
+      //   path: "history",
+      //   name: "History",
+      //   component: History,
+      // },
       {
         path: "custom-url",
         name: "CustomUrl",
         component: CustomUrl,
-      }
-    ]
+      },
+    ],
   },
   {
     path: "/landing",
     name: "Landing",
     component: Landing,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/history",
+    name: "History",
+    component: History,
+  },
+  {
+    path: "/:shortCode",
+    name: "RedirectShortUrl",
+    component: RedirectShortUrl,
     meta: { requiresAuth: false },
   },
 ];

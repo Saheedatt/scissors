@@ -35,6 +35,7 @@ import { useFirebase } from "../composables/useFirebase";
 import "../style.css";
 import validator from "validator";
 
+
 export default defineComponent({
   setup() {
     const { shortenUrl } = useFirebase();
@@ -43,8 +44,6 @@ export default defineComponent({
     const error = ref("");
 
     const handleSubmit = async () => {
-      // console.log(url)
-      // console.log(shortenedUrl)
       if (!validator.isURL(url.value)) {
         error.value = "Please enter a valid URL.";
         return;
@@ -52,9 +51,9 @@ export default defineComponent({
       error.value = "";
 
       try {
-        shortenedUrl.value = await shortenUrl(url.value);
+        const shortId = await shortenUrl(url.value);
+        shortenedUrl.value = `${window.location.origin}/${shortId}`;
       } catch (error) {
-      
         console.error("Failed to shorten URL", error);
       }
     };
