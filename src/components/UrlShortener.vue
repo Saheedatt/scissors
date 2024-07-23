@@ -20,12 +20,14 @@
     </div>
     <div class="bottom">
       <div class="history">
-      <router-link to="/history" class="history">History</router-link>
-    </div>
-      <div class="custom">
-      <router-link to="/custom-url" class="custom-url">Want a custom URL?</router-link>
+        <router-link to="/history" class="history">History</router-link>
       </div>
-  </div>
+      <div class="custom">
+        <router-link to="/custom-url" class="custom-url"
+          >Want a custom URL?</router-link
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,7 +36,7 @@ import { defineComponent, ref } from "vue";
 import { useFirebase } from "../composables/useFirebase";
 import "../style.css";
 import validator from "validator";
-
+import { getAuth } from "firebase/auth";
 
 export default defineComponent({
   setup() {
@@ -44,6 +46,13 @@ export default defineComponent({
     const error = ref("");
 
     const handleSubmit = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (!user) {
+        error.value = "Please sign in to shorten a URL.";
+        return;
+      }
       if (!validator.isURL(url.value)) {
         error.value = "Please enter a valid URL.";
         return;
@@ -51,7 +60,7 @@ export default defineComponent({
       error.value = "";
 
       try {
-        const shortId = await shortenUrl(url.value);
+        const shortId = await shortenUrl(url.value, user);
         shortenedUrl.value = `${window.location.origin}/${shortId}`;
       } catch (error) {
         console.error("Failed to shorten URL", error);
@@ -126,7 +135,7 @@ button:hover {
   font-weight: 700;
   color: #333;
 }
-.link{
+.link {
   color: rgb(0, 0, 255);
   text-decoration: none;
   padding-inline-start: 1rem;
@@ -141,19 +150,22 @@ button:hover {
   width: 100%;
 }
 
-.custom, .history {
+.custom,
+.history {
   margin: 0 1.75rem;
 }
 
-.custom-url, .history {
+.custom-url,
+.history {
   text-decoration: none;
   color: #ff9800;
 }
 
-.custom-url:hover, .history:hover {
+.custom-url:hover,
+.history:hover {
   text-decoration: underline;
 }
-.error{
+.error {
   color: rgb(179, 0, 0);
 }
 </style>

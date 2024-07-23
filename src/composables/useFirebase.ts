@@ -12,7 +12,11 @@ import { customAlphabet } from "nanoid";
 import validator from "validator";
 
 export function useFirebase() {
-  const shortenUrl = async (url: string) => {
+  const shortenUrl = async (url: string, user: User) => {
+    if (!user || !user.uid) {
+      throw new Error("User not authenticated");
+    }
+    
     if (!validator.isURL(url)) {
       throw new Error("Invalid URL");
     }
@@ -27,7 +31,7 @@ export function useFirebase() {
         shortUrl: id,
         originalUrl: url,
         createdAt: new Date(),
-        // userId: user.uid,
+        userId: user.uid,
       });
       console.log("Document written with ID: ", docRef.id);
       return id;
@@ -60,7 +64,7 @@ export function useFirebase() {
     // todo: try to attach a user to created links.
     const q = query(
       urlsRef,
-      // where("userId", "==", user.uid),
+      where("userId", "==", user.uid),
       orderBy("createdAt", "desc")
     );
 
