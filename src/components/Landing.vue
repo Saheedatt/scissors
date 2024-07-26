@@ -180,10 +180,10 @@ export default defineComponent({
   }
 }
 .url {
-  padding: 0.5rem 1rem;
+  padding-inline: 1rem;
   margin-block-start: 2rem;
   img {
-      width: 4.9rem;
+      width: 4.35rem;
   }
   .last-icon {
       width: 2.6rem;

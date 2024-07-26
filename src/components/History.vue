@@ -9,8 +9,10 @@
           <a :href="`${baseUrl}/${url.shortUrl}`" target="_blank">
             {{ baseUrl }}/{{ url.shortUrl }}
           </a>
-          <p>
-            Created At:
+          <p><small>{{ url.originalUrl }}</small> -- {{ url.clickCount ?? 0 }} clicks</p>
+
+          <p class="created">
+            Created at:
             {{ new Date(url.createdAt.seconds * 1000).toLocaleString() }}
           </p>
         </li>
@@ -27,7 +29,9 @@ import { useFirebase } from "../composables/useFirebase";
 interface ShortenedUrl {
   id: string;
   shortUrl: string;
+  originalUrl: string;
   createdAt: { seconds: number; nanoseconds: number };
+  clickCount: number;
 }
 
 export default defineComponent({
@@ -119,5 +123,9 @@ h2 {
 .url-item a:hover {
   text-decoration: underline;
   color: #f57c00;
+}
+.created{
+  font-weight: 700;
+  color: #4d4c4c;
 }
 </style>

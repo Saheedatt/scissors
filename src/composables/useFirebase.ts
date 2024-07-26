@@ -7,6 +7,8 @@ import {
   where,
   getDocs,
   orderBy,
+  updateDoc,
+  increment,
 } from "firebase/firestore";
 import { customAlphabet } from "nanoid";
 import validator from "validator";
@@ -16,7 +18,7 @@ export function useFirebase() {
     if (!user || !user.uid) {
       throw new Error("User not authenticated");
     }
-    
+
     if (!validator.isURL(url)) {
       throw new Error("Invalid URL");
     }
@@ -32,6 +34,7 @@ export function useFirebase() {
         originalUrl: url,
         createdAt: new Date(),
         userId: user.uid,
+        clickCount: 0,
       });
       console.log("Document written with ID: ", docRef.id);
       return id;
@@ -43,8 +46,10 @@ export function useFirebase() {
 
   const getOriginalUrl = async (shortCode: string) => {
     try {
-      const urlsRef = collection(db, "new-urls");
-      const q = query(urlsRef, where("shortUrl", "==", shortCode));
+      const q = query(
+        collection(db, "new-urls"),
+        where("shortUrl", "==", shortCode)
+      );
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
@@ -60,10 +65,8 @@ export function useFirebase() {
   };
 
   const retrieveUserUrls = async (user: User) => {
-    const urlsRef = collection(db, "new-urls");
-    // todo: try to attach a user to created links.
     const q = query(
-      urlsRef,
+      collection(db, "new-urls"),
       where("userId", "==", user.uid),
       orderBy("createdAt", "desc")
     );
@@ -75,5 +78,27 @@ export function useFirebase() {
     }));
   };
 
-  return { shortenUrl, getOriginalUrl, retrieveUserUrls };
+  const incrementClickCount = async (shortCode: string) => {
+    try {
+      const q = query(
+        collection(db, "new-urls"),
+        where("shortUrl", "==", shortCode)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        throw new Error("Short URL not found");
+      }
+
+      const doc = querySnapshot.docs[0];
+      await updateDoc(doc.ref, {
+        clickCount: increment(1),
+      });
+    } catch (error) {
+      console.error("Error incrementing click count: ", error);
+      throw error;
+    }
+  };
+
+  return { shortenUrl, getOriginalUrl, retrieveUserUrls, incrementClickCount };
 }
