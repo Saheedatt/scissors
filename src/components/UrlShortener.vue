@@ -1,10 +1,13 @@
 <template>
-  <div class="container">
+  <main class="container">
     <div class="card">
-      <h2>Shorten Your URL</h2>
+      <h1>Shorten Your URL</h1>
       <form @submit.prevent="handleSubmit">
+        <label for="url">Enter your URL:</label>
         <input v-model="url" placeholder="Enter your URL" required />
+        <div class="button">
         <button type="submit">Snip!</button>
+        </div>
       </form>
       <div v-if="error" class="error">
         <p>{{ error }}</p>
@@ -28,7 +31,7 @@
         >
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -93,18 +96,27 @@ export default defineComponent({
   width: 100%;
   max-width: 1200px;
 
-  h2 {
+  h1 {
     text-align: left;
-    margin-bottom: 1.1rem;
-    font-size: 1.8em;
+    margin-block-end: 0.5rem;
+    font-size: 1.8rem;
     color: #333;
   }
 }
 form {
   display: flex;
   flex-direction: column;
-  margin-block-start: 3rem;
-  align-items: center;
+  margin-block-start: 1rem;
+
+  .button {
+    display: flex;
+    justify-content: center;
+  }
+}
+label {
+  font-weight: bold;
+  text-align: start;
+  color: #333;
 }
 input {
   border: 1px solid #bdbbbb;
@@ -116,7 +128,7 @@ input {
 }
 button {
   margin-block-start: 1rem;
-  margin-block-end: 2rem;
+  margin-block-end: 1.2rem;
   padding: 0.5rem 1rem;
   background-color: #ff9800;
   border: none;

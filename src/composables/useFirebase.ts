@@ -14,7 +14,7 @@ import { customAlphabet } from "nanoid";
 import validator from "validator";
 
 export function useFirebase() {
-  const shortenUrl = async (url: string, user: User) => {
+  const shortenUrl = async (url: string, user: User, customName?: string) => {
     if (!user || !user.uid) {
       throw new Error("User not authenticated");
     }
@@ -23,11 +23,13 @@ export function useFirebase() {
       throw new Error("Invalid URL");
     }
 
-    // to ensure that short ids are easy to read and highlight i.e. base58.
     const nanoid = customAlphabet(
       "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     );
-    const id = nanoid(6);
+    const id = customName || nanoid(6);
+
+    // const id = customName || customAlphabet("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")(6);
+
     try {
       const docRef = await addDoc(collection(db, "new-urls"), {
         shortUrl: id,
@@ -42,6 +44,15 @@ export function useFirebase() {
       console.error("Error adding document: ", event);
       throw event;
     }
+  };
+
+  const checkCustomNameAvailability = async (customName: string) => {
+    const q = query(
+      collection(db, "new-urls"),
+      where("shortUrl", "==", customName)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.empty;
   };
 
   const getOriginalUrl = async (shortCode: string) => {
@@ -100,5 +111,11 @@ export function useFirebase() {
     }
   };
 
-  return { shortenUrl, getOriginalUrl, retrieveUserUrls, incrementClickCount };
+  return {
+    shortenUrl,
+    getOriginalUrl,
+    retrieveUserUrls,
+    incrementClickCount,
+    checkCustomNameAvailability,
+  };
 }
