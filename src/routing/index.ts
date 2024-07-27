@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../components/Home.vue";
 import Landing from "../components/Landing.vue";
 import RedirectShortUrl from "../components/RedirectShortUrl.vue";
-import QrCode from "../components/QrCode.vue";
+import Qr from "../components/Qr.vue";
 import UrlShortener from "../components/UrlShortener.vue";
 import History from "../components/History.vue";
 import CustomUrl from "../components/CustomUrl.vue";
@@ -21,15 +21,10 @@ const routes: RouteRecordRaw[] = [
         component: UrlShortener,
       },
       {
-        path: "qr-generator",
-        name: "QRCode",
-        component: QrCode,
+        path: "/qr-code",
+        name: "QrCode",
+        component: Qr,
       },
-      // {
-      //   path: "history",
-      //   name: "History",
-      //   component: History,
-      // },
       {
         path: "custom-url",
         name: "CustomUrl",
