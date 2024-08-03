@@ -1,10 +1,16 @@
 module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
-    transform: {
-      '^.+\\.(ts|tsx)$': 'ts-jest',
-    },
-  };
-  
-  
+  moduleFileExtensions: ["js", "ts", "vue"],
+  transform: {
+    "^.+\\.vue$": "vue-jest",
+     "^.+\\.ts$": "ts-jest",
+    "^.+\\.tsx?$": "ts-jest",
+    // "^.+\\.(js|jsx)$": "babel-jest",
+    // "^.+\\.ts$": "babel-jest",
+    // "^.+\\.tsx?$": "babel-jest",
+  },
+  moduleNameMapper: {
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+  },
+  transformIgnorePatterns: ["/node_modules/"],
+  testEnvironment: "jsdom",
+};

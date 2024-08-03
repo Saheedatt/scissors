@@ -34,6 +34,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useFirebase } from "../composables/useFirebase";
+import { validateUrl } from "../utils/validateUrl";
 import "../style.css";
 import validator from "validator";
 import { getAuth } from "firebase/auth";
@@ -54,7 +55,7 @@ export default defineComponent({
         error.value = "Please sign in to create a custom URL.";
         return;
       }
-      if (!validator.isURL(url.value)) {
+      if (!validateUrl(url.value)) {
         error.value = "Please enter a valid URL.";
         return;
       }
