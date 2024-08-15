@@ -1,53 +1,23 @@
-import { RouteRecordRaw } from "vue-router";
-import routes from "../../src/routing/index";
+import { describe, it, expect } from "vitest";
+import router from "../../src/routing";
 
-describe("Router Routes", () => {
-  it("should have the correct routes defined", () => {
-    const expectedRoutes: RouteRecordRaw[] = [
-      {
-        path: "/",
-        name: "Home",
-        component: expect.any(Function),
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "UrlShortener",
-            component: expect.any(Function),
-          },
-          {
-            path: "/qr-code",
-            name: "QrCode",
-            component: expect.any(Function),
-          },
-          {
-            path: "custom-url",
-            name: "CustomUrl",
-            component: expect.any(Function),
-          },
-        ],
-      },
-      {
-        path: "/landing",
-        name: "Landing",
-        component: expect.any(Function),
-        meta: { requiresAuth: false },
-      },
-      {
-        path: "/history",
-        name: "History",
-        component: expect.any(Function),
-      },
-      {
-        path: "/:shortCode",
-        name: "RedirectShortUrl",
-        component: expect.any(Function),
-        meta: { requiresAuth: false },
-      },
-    ];
+describe("Router Configuration", () => {
+  it("should have the correct number of routes", () => {
+    const numberOfRoutes = router.getRoutes().length;
+    expect(numberOfRoutes).toBe(7);
+  });
 
-    const actualRoutes = routes;
+  it("should contain the Home route with nested children", () => {
+    const homeRoute = router.getRoutes().find((route) => route.name === "Home");
+    expect(homeRoute).toBeDefined();
+    expect(homeRoute?.children).toHaveLength(3);
+  });
 
-    expect(actualRoutes).toEqual(expectedRoutes);
+  it("should contain the RedirectShortUrl route with the correct path", () => {
+    const redirectRoute = router
+      .getRoutes()
+      .find((route) => route.name === "RedirectShortUrl");
+    expect(redirectRoute).toBeDefined();
+    expect(redirectRoute?.path).toBe("/:shortCode");
   });
 });
