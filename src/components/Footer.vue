@@ -2,23 +2,22 @@
   <footer class="footer" aria-labelledby="footer">
     <div class="footer-container">
       <a href="/">
-      <div class="logo">
-        <img src="../assets/scissors.png" alt="Scissors Icon" />
-        <h1 id="logo-text">Scissors</h1>
-        <img src="../assets/scissors.png" alt="Scissors Icon" />
-      </div>
+        <div class="logo">
+          <img src="../assets/scissors.png" alt="Scissors Icon" />
+          <h1 id="logo-text">Scissors</h1>
+          <img src="../assets/scissors.png" alt="Scissors Icon" />
+        </div>
       </a>
       <div class="social-media">
-        <a href="#" aria-label="Instagram">
-          Instagram
-        </a>
+        <a href="#" aria-label="Instagram"> Instagram </a>
         <a href="https://x.com/idontseemyselff" aria-label="Twitter">
           Twitter(X)
         </a>
-        <a href="https://github.com/Saheedatt" aria-label="GitHub">
-          Github
-        </a>
-        <a href="https://www.linkedin.com/in/saheedat-afolabi-1a91b5221/" aria-label="LinkedIn">
+        <a href="https://github.com/Saheedatt" aria-label="GitHub"> Github </a>
+        <a
+          href="https://www.linkedin.com/in/saheedat-afolabi-1a91b5221/"
+          aria-label="LinkedIn"
+        >
           Linkedin
         </a>
       </div>
@@ -85,7 +84,7 @@ export default defineComponent({
 
 .social-media a {
   margin-right: 1rem;
-  color:  #f36601;
+  color: #f36601;
   font-size: 1.2rem;
   text-decoration: none;
 }
@@ -93,7 +92,7 @@ export default defineComponent({
 .copyright {
   font-size: 0.8rem;
   margin-block-start: 1rem;
-  color:  #f36601;
+  color: #f36601;
 }
 
 .decoration {
@@ -118,5 +117,59 @@ export default defineComponent({
   right: 4rem;
   bottom: -4rem;
   transform: rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    text-align: center;
+    display: flex;
+    align-items: baseline;
+  }
+  .logo {
+    img {
+      width: 30px;
+    }
+    h1 {
+      font-size: 0.8rem;
+    }
+  }
+  .social-media a {
+    font-size: 0.8rem;
+  }
+  .copyright {
+    font-size: 0.6rem;
+  }
+  .decoration {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .decoration {
+    display: none;
+  }
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .logo {
+    margin-bottom: 0.5rem;
+  }
+  .logo img {
+    width: 35px;
+  }
+  .logo h1 {
+    font-size: 0.9rem;
+  }
+  .social-media a {
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+  }
+  .copyright {
+    font-size: 0.7rem;
+  }
+  .decoration {
+    display: none;
+  }
 }
 </style>

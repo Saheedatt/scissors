@@ -36,7 +36,7 @@ import { defineComponent, ref } from "vue";
 import { useFirebase } from "../composables/useFirebase";
 import { validateUrl } from "../utils/validateUrl";
 import "../style.css";
-import validator from "validator";
+// import validator from "validator";
 import { getAuth } from "firebase/auth";
 
 export default defineComponent({
@@ -96,7 +96,7 @@ export default defineComponent({
   background-color: #f36601;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-  padding: 20px;
+  padding: 1.2rem;
   width: 100%;
   max-width: 1200px;
 
@@ -104,6 +104,7 @@ export default defineComponent({
     text-align: left;
     margin-bottom: 0.3rem;
     color: #333;
+    font-size: 1.5rem;
   }
   .subheading {
     text-align: left;
@@ -122,6 +123,7 @@ form {
 }
 label {
   font-weight: bold;
+  padding-block-end: 2px;
   text-align: start;
   color: #333;
 }
@@ -129,7 +131,7 @@ input {
   border: 1px solid #bdbbbb;
   padding: 10px;
   margin-block-end: 1.8rem;
-  font-size: 1em;
+  font-size: 1rem;
   width: 100%;
   height: 40px;
 }
@@ -165,5 +167,79 @@ button:hover {
 }
 .error {
   color: rgb(179, 0, 0);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+    box-shadow: none;
+
+    h1 {
+      font-size: 1.3rem;
+    }
+    .subheading {
+      font-size: 0.92rem;
+    }
+  }
+
+  input {
+    font-size: 0.9rem;
+    padding: 8px;
+    height: 35px;
+  }
+
+  button {
+    width: 80%;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+  .bottom {
+    font-size: 0.8rem;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+    max-width: 600px;
+
+    h1 {
+      font-size: 2rem;
+    }
+    .subheading {
+      font-size: 1.1rem;
+    }
+  }
+  button {
+    width: 50%;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .card {
+    padding: 2rem;
+    max-width: 800px;
+
+    h1 {
+      font-size: 2.2rem;
+    }
+    .subheading {
+      font-size: 1.2rem;
+    }
+  }
+
+  input {
+    font-size: 1.1rem;
+    padding: 12px;
+    height: 45px;
+  }
+
+  button {
+    width: 40%;
+    font-size: 1.1rem;
+  }
 }
 </style>

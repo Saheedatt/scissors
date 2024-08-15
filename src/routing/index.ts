@@ -6,9 +6,13 @@ import Qr from "../components/Qr.vue";
 import UrlShortener from "../components/UrlShortener.vue";
 import History from "../components/History.vue";
 import CustomUrl from "../components/CustomUrl.vue";
+import Undone from "../components/Undone.vue";
 import { auth } from "../firebase";
 
 const routes: RouteRecordRaw[] = [
+  { path: '/pricing', name: 'Pricing', component: Undone },
+  { path: '/blog', name: 'Blog', component: Undone },
+  { path: '/help', name: 'Help', component: Undone },
   {
     path: "/",
     name: "Home",

@@ -1,12 +1,12 @@
 <template>
-  <main class="container">
+  <main class="container" role="main">
     <div class="card">
       <h1>Shorten Your URL</h1>
       <form @submit.prevent="handleSubmit">
-        <label for="url">Enter your URL:</label>
+        <label for="url" aria-describedby="url">Enter your URL:</label>
         <input v-model="url" placeholder="Enter your URL" required />
         <div class="button">
-        <button type="submit">Snip!</button>
+          <button type="submit" role="button">Snip!</button>
         </div>
       </form>
       <div v-if="error" class="error">
@@ -15,9 +15,13 @@
       <div v-if="shortenedUrl">
         <p class="result">
           Shortened URL:
-          <a :href="shortenedUrl" target="_blank" class="link">{{
-            shortenedUrl
-          }}</a>
+          <a
+            :href="shortenedUrl"
+            target="_blank"
+            class="link"
+            aria-label="Visit the shortened URL"
+            >{{ shortenedUrl }}</a
+          >
         </p>
       </div>
     </div>
@@ -117,6 +121,7 @@ label {
   font-weight: bold;
   text-align: start;
   color: #333;
+  padding-block-end: 4px;
 }
 input {
   border: 1px solid #bdbbbb;
@@ -179,5 +184,65 @@ button:hover {
 }
 .error {
   color: rgb(179, 0, 0);
+}
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+    box-shadow: none;
+
+    h1 {
+      font-size: 1.3rem;
+    }
+  }
+
+  label {
+    padding-block-end: 2px;
+  }
+  input {
+    font-size: 0.9rem;
+    padding: 8px;
+    height: 35px;
+  }
+
+  button {
+    width: 80%;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .bottom {
+    font-size: 0.8rem;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .custom,
+  .history {
+    margin: 0;
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+    max-width: 600px;
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  button {
+    width: 50%;
+    font-size: 1rem;
+  }
+
+  .bottom {
+    justify-content: space-between;
+  }
+
+  .custom,
+  .history {
+    margin: 0 1.2rem;
+  }
 }
 </style>

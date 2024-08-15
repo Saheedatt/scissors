@@ -3,7 +3,7 @@
     <h1>Generate a QR Code for your links</h1>
     <div class="content">
       <form @submit.prevent="generateQRCode" class="form">
-        <label for="qr-text">Enter Text for QR Code</label>
+        <label for="qr-text" aria-describedby="qr-text">Enter Text for QR Code</label>
         <input
           id="qr-text"
           type="text"
@@ -20,7 +20,7 @@
         <p class="result">
           <img :src="qrCodeDataUrl" alt="QR Code" />
         </p>
-        <button @click="downloadQRCode">Download here!</button>
+        <button @click="downloadQRCode" role="button">Download here!</button>
       </div>
     </div>
   </section>
@@ -133,7 +133,7 @@ button:hover {
   align-items: center;
   margin-left: 2rem;
 
-  button{
+  button {
     margin-block-start: 0;
     margin-block-end: 0.1rem;
   }
@@ -146,5 +146,19 @@ button:hover {
 }
 .error {
   color: rgb(179, 0, 0);
+}
+
+@media (max-width: 480px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    .form {
+      align-items: center;
+    }
+    label {
+      margin-block-end: 0.6rem;
+    }
+  }
 }
 </style>

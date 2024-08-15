@@ -25,7 +25,6 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted, ref } from "vue";
-// import QrCode from './QrCode.vue'
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -37,19 +36,25 @@ export default defineComponent({
     const fullText = "Let's help you manipulate your looonnnggg links!";
     const showTypingEffect = ref(true);
 
+    const isMobileScreen = window.innerWidth <= 480;
+
     onMounted(() => {
-      let index = 0;
-      const typingInterval = setInterval(() => {
-        if (index < fullText.length) {
-          typingText.value += fullText[index];
-          index++;
-        } else {
-          clearInterval(typingInterval);
-          setTimeout(() => {
-            showTypingEffect.value = false;
-          }, 1000);
-        }
-      }, 100);
+      if (!isMobileScreen) {
+        let index = 0;
+        const typingInterval = setInterval(() => {
+          if (index < fullText.length) {
+            typingText.value += fullText[index];
+            index++;
+          } else {
+            clearInterval(typingInterval);
+            setTimeout(() => {
+              showTypingEffect.value = false;
+            }, 1000);
+          }
+        }, 100);
+      } else {
+        showTypingEffect.value = false;
+      }
     });
 
     return {
@@ -66,14 +71,14 @@ export default defineComponent({
 .home {
   text-align: center;
   padding: 2rem;
-  background-color: #f4f4f4; 
+  background-color: #f4f4f4;
   min-height: 100vh;
 }
 
 .hero {
   margin-bottom: 2rem;
   padding: 2rem;
-  border-radius: 10px; 
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -128,4 +133,54 @@ export default defineComponent({
 .content {
   padding: 2rem;
 }
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 1.5rem;
+  }
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .buttons {
+    margin-block-start: 2rem;
+  }
+  .button {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+  }
+  .button img {
+    width: 20px;
+    height: 20px;
+  }
+  .hero h1.typing-container {
+    display: none;
+  }
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+}
+/* @media (min-width: 1025px) {
+  .hero h1 {
+    font-size: 4.2rem;
+  }
+
+  .buttons {
+    margin-block-start: 3rem;
+  }
+
+  .button {
+    font-size: 1.6rem;
+    padding: 1rem 1.4rem;
+  }
+
+  .button img {
+    width: 28px;
+    height: 28px;
+  }
+} */
 </style>

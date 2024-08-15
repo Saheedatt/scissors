@@ -21,11 +21,12 @@
         </li>
       </ul>
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+        <button @click="prevPage" :disabled="currentPage === 1">
+          Previous
+        </button>
         <span>Page {{ currentPage }}</span>
         <button @click="nextPage">Next</button>
       </div>
-
     </div>
   </div>
 </template>
@@ -102,7 +103,7 @@ export default defineComponent({
       error,
       baseUrl,
       currentPage,
-      nextPage, 
+      nextPage,
       prevPage,
     };
   },
@@ -117,16 +118,19 @@ export default defineComponent({
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* background-color: #fff; */
 }
+
 h2 {
   text-align: center;
   border-bottom: 2px solid #000;
   margin-block: 1.5rem;
+  font-size: 2.05rem;
 }
+
 .error {
   color: rgb(236, 9, 9);
 }
+
 .history-list {
   padding-inline: 10px;
 }
@@ -135,7 +139,9 @@ h2 {
   border-bottom: 1px solid #acacac;
   padding-block: 10px 0;
   padding-inline: 1rem;
+  font-size: 1.15rem;
 }
+
 .url-item:last-child {
   border-bottom: none;
   padding-block-end: 1rem;
@@ -151,15 +157,18 @@ h2 {
   text-decoration: underline;
   color: #f57c00;
 }
+
 .created {
   font-weight: 700;
   color: #4d4c4c;
 }
+
 .pagination {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
 }
+
 .pagination button {
   padding: 0.5rem 1rem;
   margin: 0 0.5rem;
@@ -168,13 +177,113 @@ h2 {
   cursor: pointer;
   color: #fff;
   font-weight: bold;
+  font-size: 1.1rem;
 }
+
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
 .pagination span {
   align-self: center;
   margin: 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+  .container {
+    display: block;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    hyphens: auto;
+    margin: 0.8rem;
+    box-shadow: none;
+    border: none;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-block: 1rem;
+  }
+
+  .history-list {
+    padding-inline: 0;
+  }
+
+  .url-item {
+    padding-inline: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .pagination button {
+    padding: 0.4rem 0.8rem;
+    margin: 0 0.2rem;
+    font-size: 0.9rem;
+  }
+
+  .pagination span {
+    margin: 0 0.3rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    margin: 2rem;
+    padding-inline: 1.5rem;
+    padding-block: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    margin-block: 1.25rem;
+  }
+
+  .url-item {
+    padding-inline: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .pagination button {
+    padding: 0.45rem 0.9rem;
+    margin: 0 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .pagination span {
+    margin: 0 0.4rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    max-width: 50rem;
+    margin: 2.5rem auto;
+    padding: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.85rem;
+    margin-block: 1.35rem;
+  }
+
+  .url-item {
+    padding-inline: 0.9rem;
+    font-size: 1.05rem;
+  }
+
+  .pagination button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .pagination span {
+    margin: 0 0.45rem;
+    font-size: 1rem;
+  }
 }
 </style>
